@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,81 +14,44 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  email     String     @unique
-  name      String
-  image     String
+  id        String      @id @default(uuid())
+  email     String      @unique
   provider  Provider
-  rooms     RoomUser[]
-  messages  Message[]
-  createdAt DateTime   @default(now())
-  Room      Room[]
-  Stream    Stream[]
-  Upvote    Upvote[]
-}
-
-model Room {
-  id           String     @id @default(uuid())
-  code         String     @unique
-  name         String
-  adminId      String
-  admin        User       @relation(fields: [adminId], references: [id])
-  users        RoomUser[]
-  streams      Stream[]
-  messages     Message[]
-  allowSongAdd Boolean    @default(true) // Admin can control this
-  createdAt    DateTime   @default(now())
-}
-
-model RoomUser {
-  id     String @id @default(uuid())
-  userId String
-  roomId String
-  role   Role   @default(USER)
-  user   User   @relation(fields: [userId], references: [id])
-  room   Room   @relation(fields: [roomId], references: [id])
-
-  @@unique([userId, roomId])
+  streams   Stream[]  @relation("user")
+  upvotes   Upvote[]
 }
 
 model Stream {
-  id          String     @id @default(uuid())
-  type        StreamType
-  active      Boolean    @default(true)
-  played      Boolean    @default(false)
-  playedTs    DateTime   @default(now())
-  createdAt   DateTime   @default(now())
-  roomId      String
-  extractedId String
-  url         String
-  bigImg      String     @default("")
-  smallImg    String     @default("")
-  title       String     @default("")
-  room        Room       @relation(fields: [roomId], references: [id])
-  upvotes     Upvote[]
-  addedById   String?
-  addedBy     User?      @relation(fields: [addedById], references: [id])
+  id            String      @id @default(uuid())
+  type          StreamType
+  url           String
+  extractedId   String
+  title         String     @default("")
+  smallImg      String     @default("")
+  bigImg        String     @default("")
+  active        Boolean    @default(true)
+  played        Boolean    @default(false)
+  playedTs      DateTime?
+  createAt      DateTime      @default(now())
+  upvotes       Upvote[]
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], name: "user")
+  currentStream CurrentStream?
+}
+
+model CurrentStream {
+  userId       String    @id
+  streamId     String?   @unique
+  stream       Stream?    @relation(fields: [streamId], references: [id])
 }
 
 model Upvote {
-  id       String   @id @default(uuid())
-  userId   String
-  streamId String
-  vote     VoteType
-  stream   Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
-  user     User     @relation(fields: [userId], references: [id])
-
-  @@unique([userId, streamId])
-}
-
-model Message {
-  id        String   @id @default(uuid())
-  text      String
-  createdAt DateTime @default(now())
+  id        String      @id @default(uuid())
   userId    String
-  roomId    String
-  user      User     @relation(fields: [userId], references: [id])
-  room      Room     @relation(fields: [roomId], references: [id])
+  streamId  String
+  user      User        @relation(fields: [userId], references: [id])
+  stream    Stream      @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  @@unique([userId, streamId])
 }
 
 enum StreamType {
@@ -94,12 +63,8 @@ enum Provider {
   Google
 }
 
-enum VoteType {
-  Upvote
-  Downvote
-}
 
-enum Role {
-  USER
-  ADMIN
-}
+
+
+
+

@@ -1,19 +1,8 @@
 "use client"
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react'
 
-const Redirect = () => {
-    const session = useSession();
-    const router = useRouter();
+import useRedirect from '../hooks/useRedirect';
 
-    useEffect(() => {
-        if(session?.data?.user){
-            router.push("/room")
-        }
-    }, [router, session]);
-
-  return null;
+export function Redirect() {
+    useRedirect();
+    return null;
 }
-
-export default Redirect

@@ -1,29 +1,15 @@
+
 import type { Metadata } from "next";
-import { Funnel_Display, Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import { Provider } from "./Provider";
-import { Toaster } from "@/components/ui/sonner"
-import FeedbackComponent from "./components/feedback";
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SessionProvider } from "next-auth/react";
+import { Providers } from "./provider";
 
-const funnelDisplay = Funnel_Display({
-  subsets: ["latin"],
-  variable: "--font-funnel",
-  display: "swap",
-});
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "700"], // Adjust weights as needed
-  variable: "--font-roboto",
-  display: "swap",
-});
-
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Crowdify",
-  description: "Music Streaming Platform",
+  description: "Real-time collaborative music streaming app !!",
 };
 
 export default function RootLayout({
@@ -33,17 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${funnelDisplay.variable} ${roboto.variable} antialiased relative`}
-      >
-        <Provider>
-        <Analytics/>
-        <SpeedInsights/>
-          <Toaster />
-          <FeedbackComponent />
-        {children}
-        </Provider>
-      </body>
+      <body className={inter.className}>
+          <Providers>
+            {children}
+          </Providers>
+        </body>
     </html>
   );
 }
