@@ -1,11 +1,7 @@
 # Crowdify – Collaborative Music Streaming Platform
 
 Crowdify is a real-time music streaming platform where users can create rooms, invite others, add songs, and upvote tracks. The most upvoted song plays automatically. Crowdify also features an AI chatbot for assistance and engagement.
-# Crowdify – Collaborative Music Streaming Platform
 
-Crowdify is a real-time music streaming platform where users can create rooms, invite others, add songs, and upvote tracks. The most upvoted song plays automatically. Crowdify also features an AI chatbot for assistance and engagement.
-
----
 ---
 
 ## Features
@@ -24,7 +20,6 @@ Crowdify is a real-time music streaming platform where users can create rooms, i
 ---
 
 ## Stack
-## Stack
 
 - **Frontend:** Next.js, React, TailwindCSS
 - **Backend:** Redis, WebSocket
@@ -39,7 +34,6 @@ Crowdify is a real-time music streaming platform where users can create rooms, i
 - **Authentication:** NextAuth.js / OAuth
 - **Streaming API:** YouTube API
 
----
 ---
 
 ## Usage
